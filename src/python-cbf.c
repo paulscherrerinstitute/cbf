@@ -82,7 +82,7 @@ static struct PyModuleDef moduledef = {
 };
 
 #define INITERROR return NULL
-PyObject *PyInit_cbf(void)
+PyObject *PyInit_cbf_c(void)
 
 #else
 #define INITERROR return
