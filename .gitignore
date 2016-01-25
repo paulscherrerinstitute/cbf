@@ -1,0 +1,8 @@
+build
+dist
+*.pyc
+*.so
+.idea
+.eggs
+.ipynb_checkpoints
+cbf.egg-info
