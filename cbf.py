@@ -24,7 +24,7 @@ X-Binary-Size-Second-Dimension: {size_second_dimension:d}\r
 X-Binary-Size-Padding: 4095\r
 \r\n'''
 
-header_end_mark = "\x0C\x1A\x04\xD5"
+header_end_mark = b'\x0C\x1A\x04\xD5'
 
 
 def write(filename, data, header=None):
@@ -79,7 +79,7 @@ def read(filename, metadata=True):
     file_header = file_content[:header_end_index]
     pattern = re.compile(r'X-Binary-([\w-]*)([\s:]*)(.*)')
     header = dict()
-    for line in file_header.splitlines():
+    for line in file_header.decode().splitlines():
         m = pattern.search(line)
         if m:
             key = m.group(1).lower().replace('-', '_')  # Sanitize key names
@@ -128,11 +128,8 @@ def uncompress(binary_data, size_x, size_y, data_type):
 
     size = size_x * size_y * data_type(0).nbytes
 
-    output_buffer = "a" * size
-    output_buffer = struct.pack('%dc' % size, *output_buffer)
+    output_buffer = b'a' * size
     cbf_c.uncompress(binary_data, output_buffer)
     numpy_array = numpy.fromstring(output_buffer, dtype=data_type)
     numpy_array = numpy_array.reshape(size_x, size_y)
     return numpy_array
-
-
