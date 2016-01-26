@@ -6,8 +6,7 @@ CBF is a simple Python package for reading and writing cbf files.
 ## PYPI
 
 ```
-python setup.py bdist
-pip install -e .
+pip install cbf
 ```
 
 ## Anaconda
