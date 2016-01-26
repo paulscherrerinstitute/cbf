@@ -1,5 +1,5 @@
 # Overview
-CBF is a simple Python package for reading and writing cbf files.
+CBF is a simple Python package (Python 2.7/3.x) for reading and writing cbf files.
 
 # Installation
 
