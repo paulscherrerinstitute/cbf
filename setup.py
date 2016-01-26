@@ -3,17 +3,19 @@
 
 from setuptools import setup, find_packages, Extension
 
-VERSION = (0, 0, 1)
+VERSION = (1, 0, 2)
 VERSION_STR = ".".join([str(x) for x in VERSION])
 
 setup(
     name='cbf',
     version=VERSION_STR,
     description="CBF Bindings for Python",
+    author="paul scherrer institute",
+    author_email='daq@psi.ch',
     # long_description=open('Readme.md', 'r').read(),
     url='https://github.com/paulscherrerinstitute/cbf',
-    packages=['.'],
-    package_dir={'': '.'},
+    # packages=['.'],
+    # package_dir={'': '.'},
     ext_modules=[
         Extension('cbf_c', [
             'src/cbf.cpp',
