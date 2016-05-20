@@ -26,8 +26,10 @@ X-Binary-Size-Padding: 4095\r
 
 header_end_mark = b'\x0C\x1A\x04\xD5'
 
+end_binary_section = "\r\n--CIF-BINARY-FORMAT-SECTION----\r\n;\r\n"
 
-def write(filename, data, header=None):
+
+def write(filename, data, header=None, padding=4095):
     """
     Write CBF file
     :param filename: Filename of cbf file to write
@@ -54,9 +56,15 @@ def write(filename, data, header=None):
     # file_handle.write(header['version'])
     # file_handle.write(header['convention'])
     # file_handle.write(header['contents'])
-    file_handle.write(header_base.format(binary_size=output_buffer.size, number_of_elements=data.size, size_fastest_dimension=data.shape[1], size_second_dimension=data.shape[0], md5_hash=md5_hash, element_type=element_type))
+    file_handle.write(header_base.format(binary_size=output_buffer.size, number_of_elements=data.size, size_fastest_dimension=data.shape[1], size_second_dimension=data.shape[0], md5_hash=md5_hash, element_type=element_type).encode())
     file_handle.write(header_end_mark)
     file_handle.write(output_buffer)
+
+    if padding:
+        padding_bytes = b'\x00'*padding
+        file_handle.write(padding_bytes)
+    file_handle.write(end_binary_section.encode())
+
     file_handle.close()
 
 
