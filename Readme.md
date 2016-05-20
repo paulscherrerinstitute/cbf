@@ -25,6 +25,11 @@ content = cbf.read('example.cbf')
 
 numpy_array_with_data = content.data
 header_metadata = content.metadata
+
+# Plot image with matplot lib
+from matplotlib import pyplot as plt
+plt.imshow(numpy_array_with_data, cmap='gray', vmax=50)
+plt.show()
 ```
 
 * Write CBF file
@@ -33,3 +38,5 @@ header_metadata = content.metadata
 import cbf
 cbf.write(numpy_array)
 ```
+
+
