@@ -21,7 +21,7 @@ Content-MD5: {md5_hash}\r
 X-Binary-Number-of-Elements: {number_of_elements:d}\r
 X-Binary-Size-Fastest-Dimension: {size_fastest_dimension:d}\r
 X-Binary-Size-Second-Dimension: {size_second_dimension:d}\r
-X-Binary-Size-Padding: 4095\r
+X-Binary-Size-Padding: {size_padding:d}\r
 \r\n'''
 
 header_end_mark = b'\x0C\x1A\x04\xD5'
@@ -29,12 +29,13 @@ header_end_mark = b'\x0C\x1A\x04\xD5'
 end_binary_section = "\r\n--CIF-BINARY-FORMAT-SECTION----\r\n;\r\n"
 
 
-def write(filename, data, header=None, padding=4095):
+def write(filename, data, header=None, size_padding=0):
     """
     Write CBF file
     :param filename: Filename of cbf file to write
     :param data: Data to write to cbf file (numpy array)
     :param header: Custom header to write to file
+    :param size_padding: Number of bytes to pad at the end of the binary section
     :return: Compressed size
     """
 
@@ -56,12 +57,12 @@ def write(filename, data, header=None, padding=4095):
     # file_handle.write(header['version'])
     # file_handle.write(header['convention'])
     # file_handle.write(header['contents'])
-    file_handle.write(header_base.format(binary_size=output_buffer.size, number_of_elements=data.size, size_fastest_dimension=data.shape[1], size_second_dimension=data.shape[0], md5_hash=md5_hash, element_type=element_type).encode())
+    file_handle.write(header_base.format(binary_size=output_buffer.size, number_of_elements=data.size, size_fastest_dimension=data.shape[1], size_second_dimension=data.shape[0], md5_hash=md5_hash, element_type=element_type, size_padding=size_padding).encode())
     file_handle.write(header_end_mark)
     file_handle.write(output_buffer)
 
-    if padding:
-        padding_bytes = b'\x00'*padding
+    if size_padding:
+        padding_bytes = b'\x00'*size_padding
         file_handle.write(padding_bytes)
     file_handle.write(end_binary_section.encode())
 
