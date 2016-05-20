@@ -36,7 +36,7 @@ plt.show()
 
 ```python
 import cbf
-cbf.write(numpy_array)
+cbf.write('example.cbf', numpy_array)
 ```
 
 
