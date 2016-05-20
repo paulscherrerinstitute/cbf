@@ -50,7 +50,7 @@ def write(filename, data, header=None, size_padding=0):
     # Compress data
     output_buffer = compress(data)
 
-    md5_hash = base64.b64encode(hashlib.md5(output_buffer).digest())
+    md5_hash = base64.b64encode(hashlib.md5(output_buffer).digest()).decode()
 
     # Write file
     file_handle = open(filename, 'wb')
@@ -105,6 +105,7 @@ def read(filename, metadata=True):
 
     # Read binary data
     input_buffer = file_content[header_end_index + len(header_end_mark):][:header['size']]
+    # print(base64.b64encode(hashlib.md5(input_buffer).digest()))
 
     # Uncompress data
     data_type = numpy.uint32 if '32' in header['element_type'] else numpy.uint16
