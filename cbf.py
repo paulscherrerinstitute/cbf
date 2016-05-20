@@ -95,7 +95,7 @@ def read(filename, metadata=True):
     # print(header)
 
     # Read binary data
-    input_buffer = file_content[header_end_index + len(header_end_mark):]
+    input_buffer = file_content[header_end_index + len(header_end_mark):][:header['size']]
 
     # Uncompress data
     data_type = numpy.uint32 if '32' in header['element_type'] else numpy.uint16
