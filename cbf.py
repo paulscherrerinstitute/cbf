@@ -125,6 +125,10 @@ def compress(data):
     """
     output_buffer = numpy.ndarray(data.nbytes, dtype=numpy.uint8, order='C')
     compressed_size = cbf_c.compress(data, output_buffer)
+
+    if compressed_size == 0:
+        raise Exception("Unable to Compress")
+
     # print(compressed_size)
     return output_buffer[:compressed_size]
 
