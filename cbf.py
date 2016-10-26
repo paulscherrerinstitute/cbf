@@ -41,8 +41,8 @@ def write(filename, data, header=None, size_padding=0):
     # Check input data
     if data.itemsize == 4:
         element_type = 'signed 32-bit integer'
-    elif data.itemsize == 2:
-        element_type = 'signed 16-bit integer'
+    # elif data.itemsize == 2:
+    #     element_type = 'signed 16-bit integer'
     else:
         raise TypeError(str(data.dtype))
 
@@ -133,7 +133,12 @@ def read(filename, metadata=True):
     # print(base64.b64encode(hashlib.md5(input_buffer).digest()))
 
     # Uncompress data
-    data_type = numpy.uint32 if '32' in header['element_type'] else numpy.uint16
+    if '32' in header['element_type']:
+        data_type = numpy.uint32
+    # elif '16' in header['element_type']:
+    #     data_type = numpy.uint16
+    else:
+        raise TypeError('Type not supported'+header['element_type'])
 
     if header['compression'] == "x-CBF_BYTE_OFFSET":
         data = uncompress(input_buffer, header['size_second_dimension'], header['size_fastest_dimension'], data_type)
@@ -161,7 +166,6 @@ def compress(data):
     if compressed_size == 0:
         raise Exception("Unable to Compress")
 
-    # print(compressed_size)
     return output_buffer[:compressed_size]
 
 
