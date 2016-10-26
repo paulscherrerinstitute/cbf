@@ -11,7 +11,7 @@ header_base = '''_array_data.data\r
 ;\r
 --CIF-BINARY-FORMAT-SECTION--\r
 Content-Type: application/octet-stream;\r
-     conversions="x-CBF_BYTE_OFFSET"\r
+     conversions="{compression_algorithm}"\r
 Content-Transfer-Encoding: BINARY\r
 X-Binary-Size: {binary_size:d}\r
 X-Binary-ID: 1\r
@@ -47,8 +47,17 @@ def write(filename, data, header=None, size_padding=0):
     else:
         raise TypeError(str(data.dtype))
 
+    compression_algorithm = 'x-CBF_BYTE_OFFSET'
+
     # Compress data
-    output_buffer = compress(data)
+    try:
+        output_buffer = compress(data)
+        output_buffer_size = output_buffer.size
+    except:
+        # The cbf compression was not able to compress the data
+        compression_algorithm = 'x-CBF_NONE'
+        output_buffer = data.tobytes()
+        output_buffer_size = data.nbytes
 
     md5_hash = base64.b64encode(hashlib.md5(output_buffer).digest()).decode()
 
@@ -57,7 +66,13 @@ def write(filename, data, header=None, size_padding=0):
     # file_handle.write(header['version'])
     # file_handle.write(header['convention'])
     # file_handle.write(header['contents'])
-    file_handle.write(header_base.format(binary_size=output_buffer.size, number_of_elements=data.size, size_fastest_dimension=data.shape[1], size_second_dimension=data.shape[0], md5_hash=md5_hash, element_type=element_type, size_padding=size_padding).encode())
+    file_handle.write(header_base.format(compression_algorithm=compression_algorithm,
+                                         binary_size=output_buffer_size,
+                                         number_of_elements=data.size,
+                                         size_fastest_dimension=data.shape[1],
+                                         size_second_dimension=data.shape[0],
+                                         md5_hash=md5_hash, element_type=element_type,
+                                         size_padding=size_padding).encode())
     file_handle.write(header_end_mark)
     file_handle.write(output_buffer)
 
