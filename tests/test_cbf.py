@@ -34,8 +34,12 @@ class TestGenerator(unittest.TestCase):
 
             # 65536
             # 66600 cannot compress at all
+            min_number = 0
             max_number = 66600
-            numpy_array = numpy.random.randint(0, max_number, (500, 400)).astype('int32')
+            max_number = 600
+            max_number = 2147483647  # max value int32
+            # max_number = 2147483648  # max value + 1int32 # will fail
+            numpy_array = numpy.random.randint(min_number, max_number, (500, 400)).astype('int32')
             numpy_array[0][0] = max_number
 
             # numpy_array = numpy.empty((500, 400)).astype('int32')

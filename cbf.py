@@ -3,8 +3,7 @@ import numpy
 import hashlib
 import base64
 import collections
-import cbf_c  # TODO need to be renamed
-import struct
+import cbf_c
 import re
 
 header_base = '''_array_data.data\r
@@ -102,6 +101,8 @@ def read(filename, metadata=True):
     # Read header
     file_header = file_content[:header_end_index]
     pattern = re.compile(r'X-Binary-([\w-]*)([\s:]*)(.*)')
+    pattern_md5 = re.compile(r'Content-MD5:\s*(.*)')
+    pattern_compression = re.compile(r'\s*conversions="(.*)"')
     header = dict()
     for line in file_header.decode().splitlines():
         m = pattern.search(line)
@@ -116,6 +117,15 @@ def read(filename, metadata=True):
                 except ValueError:
                     val = val
             header[key] = val
+        else:
+            m = pattern_md5.search(line)
+            if m:
+                header['md5'] = m.group(1).strip()
+            else:
+                m = pattern_compression.search(line)
+                if m:
+                    header['compression'] = m.group(1).strip()
+
     # print(header)
 
     # Read binary data
@@ -124,7 +134,14 @@ def read(filename, metadata=True):
 
     # Uncompress data
     data_type = numpy.uint32 if '32' in header['element_type'] else numpy.uint16
-    data = uncompress(input_buffer, header['size_second_dimension'], header['size_fastest_dimension'], data_type)
+
+    if header['compression'] == "x-CBF_BYTE_OFFSET":
+        data = uncompress(input_buffer, header['size_second_dimension'], header['size_fastest_dimension'], data_type)
+    elif header['compression'] == "x-CBF_NONE":
+        data = numpy.frombuffer(input_buffer, dtype=data_type)
+        data = data.reshape((header['size_second_dimension'], header['size_fastest_dimension']))
+    else:
+        raise Exception('Compression type not supported')
 
     # Declaration data class / named tuple
     data_tuple = collections.namedtuple('Data', 'data metadata')
