@@ -6,6 +6,40 @@ import collections
 import cbf_c
 import re
 
+miniheader_re = re.compile(
+    b'(.*^data_(?P<prefix>.*?)_\d+\r\n)?'
+    b'(.*^# Detector: (?P<detector_model>[^,]+),\s*(?P<detector_number>[^,\r\n]+))?'
+    b'(.*^# Pixel_size (?P<x_pixel_size>[^ m]+) m x (?P<y_pixel_size>[^ m]+))?'
+    b'(.*^# Silicon sensor, thickness (?P<sensor_thickness>[^ ]+))?'
+    b'(.*^# Exposure_time (?P<exposure_time>.+?) s\r\n)?'
+    b'(.*^# Exposure_period (?P<exposure_period>.+?) s\r\n)?'
+    b'(.*^# Threshold_setting: (?P<threshold_energy>[^ ]+ eV))?'
+    b'(.*^# Gain_setting: (?P<threshold_gain>[^\r\n]+))?'
+    b'(.*^# Image_path: (?P<image_path>[^\r\n]+))?'
+    b'(.*^# Wavelength (?P<wavelength>.*?) A)?'
+    b'(.*^# Detector_distance (?P<detector_distance>.*?) m)?'
+    b'(.*^# Beam_xy \((?P<beam_center_x>\d+\.\d+), (?P<beam_center_y>\d+\.\d+)\) pixels)?'
+    b'(.*^# Flux (?P<photon_flux>[^\r\n]+))?'
+    b'(.*^# Filter_transmission (?P<beam_attenuation>[^\r\n]+))?'
+    b'(.*^# Start_angle (?P<start_angle>.*?) deg.)?'
+    b'(.*^# Angle_increment (?P<angle_increment>.*?) deg.)?'
+    b'(.*^# Phi (?P<phi>.*?) deg.)?'
+    b'(.*^# Phi_increment (?P<phi_increment>.*?) deg.)?'
+    b'(.*^# Chi (?P<chi>.*?) deg.)?'
+    b'(.*^# Chi_increment (?P<chi_increment>.*?) deg.)?'
+    b'(.*^# Oscillation_axis (?P<oscillation_axis>[^\r\n]+))?'
+    b'(.*conversions="(?P<conversions>[^"]+)")?'
+    b'(.*X-Binary-Size: (?P<binary_size>[^\r\n]+))?'
+    b'(.*X-Binary-ID: (?P<binary_id>[^\r\n]+))?'
+    b'(.*X-Binary-Element-Type: "(?P<binary_element_type>[^"]+)")?'
+    b'(.*X-Binary-Element-Byte-Order: (?P<binary_element_byte_order>[^\r\n]+))?'
+    b'(.*Content-MD5:\s*(?P<content_md5>[^\r\n]+))?'
+    b'(.*X-Binary-Number-of-Elements: (?P<number_of_elements>[^\r\n]+))?'
+    b'(.*X-Binary-Size-Fastest-Dimension: (?P<pixels_in_x>[^\r\n]+))?'
+    b'(.*X-Binary-Size-Second-Dimension: (?P<pixels_in_y>[^\r\n]+))?'
+    b'(.*X-Binary-Size-Padding: (?P<binary_padding>[^\r\n]+))?',
+    flags=re.MULTILINE | re.DOTALL)
+
 header_base = '''_array_data.data\r
 ;\r
 --CIF-BINARY-FORMAT-SECTION--\r
@@ -83,12 +117,13 @@ def write(filename, data, header=None, size_padding=0):
     file_handle.close()
 
 
-def read(filename, metadata=True):
+def read(filename, metadata=True, parse_miniheader=False):
     """
     Read CBF files
     :param filename: Name of the file to read
     :param metadata: Return metadata alongside with the data
-    :return: Data (namedtuple('data', 'metadata')), if metadata=False metadata is None
+    :param parse_miniheader: Parse mini header as well
+    :return: Data (namedtuple('data', 'metadata', 'miniheader')), None for both metadata/miniheader if False in params.
     """
 
     file_descriptor = open(filename, 'rb')
@@ -104,6 +139,7 @@ def read(filename, metadata=True):
     pattern_md5 = re.compile(r'Content-MD5:\s*(.*)')
     pattern_compression = re.compile(r'\s*conversions="(.*)"')
     header = dict()
+
     for line in file_header.decode().splitlines():
         m = pattern.search(line)
         if m:
@@ -128,6 +164,28 @@ def read(filename, metadata=True):
 
     # print(header)
 
+    # parse miniheader
+    miniheader = dict()
+    if parse_miniheader:
+        try:
+            m = miniheader_re.match(file_header)
+            miniheader = m.groupdict()
+        except:
+            pass
+
+        for k, v in miniheader.items():
+            if not v:
+                continue
+            try:
+                miniheader[k] = int(v)
+            except (ValueError, TypeError) as e:
+                try:
+                    miniheader[k] = float(v)
+                except (ValueError, TypeError) as e:
+                    miniheader[k] = v.decode('utf-8')
+                except:
+                    pass
+
     # Read binary data
     input_buffer = file_content[header_end_index + len(header_end_mark):][:header['size']]
     # print(base64.b64encode(hashlib.md5(input_buffer).digest()))
@@ -149,9 +207,9 @@ def read(filename, metadata=True):
         raise Exception('Compression type not supported')
 
     # Declaration data class / named tuple
-    data_tuple = collections.namedtuple('Data', 'data metadata')
+    data_tuple = collections.namedtuple('Data', 'data metadata miniheader')
 
-    return data_tuple(data, header)
+    return data_tuple(data, header, miniheader)
 
 
 def compress(data):
