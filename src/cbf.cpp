@@ -6,6 +6,33 @@ extern "C" {
 #include <stdlib.h>
 #include "cbf.h"
 
+
+// The byte offset compression is explained in detail at:
+// http://www.esrf.eu/computing/Forum/imgCIF/cbf_definition.html
+// and
+// ftp://www.bernstein-plus-sons.com/software/CBF/doc/CBFlib.html
+
+//The "byte_offset" compression algorithm is the following:
+//
+//Start with a base pixel value of 0.
+//Compute the difference delta between the next pixel value and the base pixel value.
+//If -127 ≤ delta ≤ 127, output delta as one byte, make the current pixel value the base pixel value and return to step 2.
+//Otherwise output -128 (80 hex).
+//We still have to output delta. If -32767 ≤ delta ≤ 32767, output delta as a little_endian 16-bit quantity, make the current pixel value the base pixel value and return to step 2.
+//Otherwise output -32768 (8000 hex, little_endian, i.e. 00 then 80)
+//We still have to output delta. If -2147483647 ≤ delta ≤ 2147483647, output delta as a little_endian 32 bit quantity, make the current pixel value the base pixel value and return to step 2.
+//Otherwise output -2147483648 (80000000 hex, little_endian, i.e. 00, then 00, then 00, then 80) and then output the pixel value as a little-endian 64 bit quantity, make the current pixel value the base pixel value and return to step 2.
+//The "byte_offset" decompression algorithm is the following:
+//
+//Start with a base pixel value of 0.
+//Read the next byte as delta
+//If -127 ≤ delta ≤ 127, add delta to the base pixel value, make that the new base pixel value, place it on the output array and return to step 2.
+//If delta is 80 hex, read the next two bytes as a little_endian 16-bit number and make that delta.
+//If -32767 ≤ delta ≤ 32767, add delta to the base pixel value, make that the new base pixel value, place it on the output array and return to step 2.
+//If delta is 8000 hex, read the next 4 bytes as a little_endian 32-bit number and make that delta
+//If -2147483647 ≤ delta ≤ 2147483647, add delta to the base pixel value, make that the new base pixel value, place it on the output array and return to step 2.
+//If delta is 80000000 hex, read the next 8 bytes as a little_endian 64-bit number and make that delta, add delta to the base pixel value, make that the new base pixel value, place it on the output array and return to step 2.
+
 //for origin source code of the cbf [de]compression:
 //http://sourceforge.net/projects/cbflib/files/cbflib/
 //CBFlib-0.9.3.1
