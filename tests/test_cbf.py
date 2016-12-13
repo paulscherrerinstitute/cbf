@@ -41,6 +41,7 @@ class TestGenerator(unittest.TestCase):
             # max_number = 2147483648  # max value + 1int32 # will fail
             numpy_array = numpy.random.randint(min_number, max_number, (500, 400)).astype('int32')
             numpy_array[0][0] = max_number
+            # numpy_array[0][0] = -1
 
             # numpy_array = numpy.empty((500, 400)).astype('int32')
             # numpy_array.fill(max_number)
@@ -52,7 +53,7 @@ class TestGenerator(unittest.TestCase):
             content = cbf.read(test_file)
 
             if not (numpy_array == content.data).all():
-                print('SAME')
+                print('NOT SAME')
                 print((numpy_array == content.data).sum())
 
                 print(content.data)
