@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/paulscherrerinstitute/cbf.svg?branch=master)](https://travis-ci.org/paulscherrerinstitute/cbf)
+
 # Overview
 CBF is a simple Python package (Python 3.x) for reading and writing cbf files.
 
@@ -38,5 +40,3 @@ plt.show()
 import cbf
 cbf.write('example.cbf', numpy_array)
 ```
-
-
