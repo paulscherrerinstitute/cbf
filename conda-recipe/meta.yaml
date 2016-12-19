@@ -8,6 +8,7 @@ source:
 
 requirements:
     build:
+        - m2w64-make [win]
         - python
         - setuptools
     run:
