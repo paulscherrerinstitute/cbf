@@ -191,7 +191,9 @@ def read(filename, metadata=True, parse_miniheader=False):
     # print(base64.b64encode(hashlib.md5(input_buffer).digest()))
 
     # Uncompress data
-    if '32' in header['element_type']:
+    if header['element_type'] == u'"signed 32-bit integer"': # DECTRIS PILATUS format
+        data_type = numpy.int32
+    elif '32' in header['element_type']:
         data_type = numpy.uint32
     # elif '16' in header['element_type']:
     #     data_type = numpy.uint16
