@@ -32,10 +32,11 @@ install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels defaults
   - conda update -q --all
   - conda install conda-build numpy anaconda-client
   # build
-  - conda build -c $CONDA_CHANNEL --skip-existing conda-recipe
+  - conda build -c $CONDA_CHANNEL conda-recipe
   
 script:
   - echo "No test scripts to be run!"
@@ -43,3 +44,5 @@ script:
 deploy:
   provider: script
   script: find $HOME/miniconda/conda-bld/${TRAVIS_OS_NAME}-64 -name "*.tar.bz2" -exec anaconda -t $CONDA_TOKEN upload {} \;
+  on:
+    tags: true
