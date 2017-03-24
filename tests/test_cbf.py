@@ -46,7 +46,6 @@ class TestGenerator(unittest.TestCase):
             # numpy_array = numpy.empty((500, 400)).astype('int32')
             # numpy_array.fill(max_number)
 
-
             print(numpy_array[0][0])
             cbf.write(test_file, numpy_array)
 
@@ -62,9 +61,35 @@ class TestGenerator(unittest.TestCase):
             print(i)
             self.assertTrue((numpy_array == content.data).all())
 
-            # Remove test file
-            # os.remove(test_file)
+        # Remove test file
+        os.remove(test_file)
 
+    def test_read(self):
+        logging.info('Checking reading example data')
+
+        data = cbf.read('../examples/in16c_010001.cbf')
+
+        # Random points of the image
+        self.assertEqual(data.data[0][0], 1)
+        self.assertEqual(data.data[0][-1], -2)  # Point with extreme value
+        self.assertEqual(data.data[0][-2], 1)
+
+        self.assertEqual(data.data[-1][0], -2)  # Point with extreme value
+        self.assertEqual(data.data[-1][-1], -2)  # Point with extreme value
+        self.assertEqual(data.data[-1][-2], 0)
+
+        self.assertEqual(data.data[334][262], 1680)
+        self.assertEqual(data.data[125][127], -2)  # Point with extreme value
+        self.assertEqual(data.data[357][271], 214)
+
+        data = cbf.read('../examples/run2_1_00148.cbf')
+        # Random points of the image
+        self.assertEqual(data.data[1169][1006], 20)
+        self.assertEqual(data.data[1178][1030], 0)
+        self.assertEqual(data.data[1223][1015], 2068)
+        self.assertEqual(data.data[754][1859], 14)
+        self.assertEqual(data.data[777][1707], 16)
+        self.assertEqual(data.data[1302][1323], 98)
 
 if __name__ == '__main__':
     unittest.main()
