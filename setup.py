@@ -19,14 +19,9 @@ setup(
         Extension('cbf_c', [
             'src/cbf.cpp',
             'src/python-cbf.c'
-        ], extra_compile_args=[
-            "-lstdc++",
-            "-O3",
-            "-Wall",
-            "-W",
-            "-Wundef",
-            "-DVERSION=\"%s\"" % VERSION_STR,
-            "-DCBF_VERSION=\"0.0.1\"",
+        ], define_macros=[
+            ("VERSION", '\\"%s\\"' % VERSION_STR),
+            ("CBF_VERSION", '\\"0.0.1\\"'),
         ])
     ],
 
