@@ -10,12 +10,14 @@ VERSION_STR = ".".join([str(x) for x in VERSION])
 CBF_VERSION = (0, 0, 1)
 CBF_VERSION_STR = ".".join([str(x) for x in CBF_VERSION])
 
+compile_args = []
 if platform.system().lower() == 'windows':
     macros = [("VERSION", '\\"%s\\"' % VERSION_STR),
             ("CBF_VERSION", '\\"%s\\"' % CBF_VERSION_STR)]
 else:
     macros = [("VERSION", '"%s"' % VERSION_STR),
             ("CBF_VERSION", '"%s"' % CBF_VERSION_STR)]
+    compile_args.append('-O3')
 
 setup(
     name='cbf',
@@ -31,7 +33,8 @@ setup(
             'src/cbf.cpp',
             'src/python-cbf.c'
         ],
-        define_macros=macros
+        define_macros=macros,
+        extra_compile_args=compile_args
         )
     ],
 
