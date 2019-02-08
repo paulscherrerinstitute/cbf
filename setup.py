@@ -4,7 +4,7 @@
 from setuptools import setup, find_packages, Extension
 import platform
 
-VERSION = (1, 1, 3)
+VERSION = (1, 1, 4)
 VERSION_STR = ".".join([str(x) for x in VERSION])
 
 CBF_VERSION = (0, 0, 1)
