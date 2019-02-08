@@ -2,9 +2,20 @@
 
 
 from setuptools import setup, find_packages, Extension
+import platform
 
 VERSION = (1, 1, 3)
 VERSION_STR = ".".join([str(x) for x in VERSION])
+
+CBF_VERSION = (0, 0, 1)
+CBF_VERSION_STR = ".".join([str(x) for x in CBF_VERSION])
+
+if platform.system().lower() == 'windows':
+    macros = [("VERSION", '\\"%s\\"' % VERSION_STR),
+            ("CBF_VERSION", '\\"%s\\"' % CBF_VERSION_STR)]
+else:
+    macros = [("VERSION", '"%s"' % VERSION_STR),
+            ("CBF_VERSION", '"%s"' % CBF_VERSION_STR)]
 
 setup(
     name='cbf',
@@ -19,10 +30,9 @@ setup(
         Extension('cbf_c', [
             'src/cbf.cpp',
             'src/python-cbf.c'
-        ], define_macros=[
-            ("VERSION", '\\"%s\\"' % VERSION_STR),
-            ("CBF_VERSION", '\\"0.0.1\\"'),
-        ])
+        ],
+        define_macros=macros
+        )
     ],
 
     classifiers=[
