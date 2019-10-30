@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/paulscherrerinstitute/cbf.svg?branch=master)](https://travis-ci.org/paulscherrerinstitute/cbf)
 
 # Overview
-CBF is a simple Python package (Python 3.x) for reading and writing cbf files.
+CBF is a simple Python package (Python 3.x) for reading and writing cbf (Crystallographic Binary Format) files.
 
 # Installation
 
