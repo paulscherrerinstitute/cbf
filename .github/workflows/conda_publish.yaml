@@ -1,6 +1,9 @@
 
 name: conda_publish
 
+env:
+  INPUT_CHANNEL_OPTS: '-c conda-forge'
+
 on:
   push:
     tags:
