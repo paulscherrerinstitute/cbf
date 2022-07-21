@@ -24,10 +24,7 @@ setup(
     version=VERSION_STR,
     description="CBF Bindings for Python",
     author="Paul Scherrer Institute",
-    # long_description=open('Readme.md', 'r').read(),
     url='https://github.com/paulscherrerinstitute/cbf',
-    # packages=['.'],
-    # package_dir={'': '.'},
     py_modules=['cbf'],
     ext_modules=[
         Extension('cbf_c', [
@@ -41,7 +38,6 @@ setup(
     install_requires=[
           'numpy'
       ],
-
     classifiers=[
         'Programming Language :: C',
         'Programming Language :: Python',
