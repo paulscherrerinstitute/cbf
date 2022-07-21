@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, Extension
 import platform
 
 VERSION = (1, 1, 4)
@@ -26,8 +26,9 @@ setup(
     author="Paul Scherrer Institute",
     # long_description=open('Readme.md', 'r').read(),
     url='https://github.com/paulscherrerinstitute/cbf',
-    packages=['.'],
-    package_dir={'': '.'},
+    # packages=['.'],
+    # package_dir={'': '.'},
+    py_modules=['cbf'],
     ext_modules=[
         Extension('cbf_c', [
             'src/cbf.cpp',
