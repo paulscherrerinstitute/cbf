@@ -5,14 +5,7 @@ import cbf
 import os
 
 logging.basicConfig(level=logging.DEBUG)
-
-
-def pre():
-    logging.info('pre')
-
-
-def post():
-    logging.info('post')
+base_dir_examples = "examples"
 
 
 class TestGenerator(unittest.TestCase):
@@ -22,9 +15,9 @@ class TestGenerator(unittest.TestCase):
 
     def test_write(self):
         for i in range(1000):
-            logging.info('start')
+            logging.info("start")
 
-            test_file = 'test.cbf'
+            test_file = "test.cbf"
 
             # Ensure that file does not exist
             try:
@@ -39,7 +32,7 @@ class TestGenerator(unittest.TestCase):
             max_number = 600
             max_number = 2147483647  # max value int32
             # max_number = 2147483648  # max value + 1int32 # will fail
-            numpy_array = numpy.random.randint(min_number, max_number, (500, 400)).astype('int32')
+            numpy_array = numpy.random.randint(min_number, max_number, (500, 400)).astype("int32")
             numpy_array[0][0] = max_number
             # numpy_array[0][0] = -1
 
@@ -52,7 +45,7 @@ class TestGenerator(unittest.TestCase):
             content = cbf.read(test_file)
 
             if not (numpy_array == content.data).all():
-                print('NOT SAME')
+                print("NOT SAME")
                 print((numpy_array == content.data).sum())
 
                 print(content.data)
@@ -65,9 +58,9 @@ class TestGenerator(unittest.TestCase):
         os.remove(test_file)
 
     def test_read(self):
-        logging.info('Checking reading example data')
+        logging.info("Checking reading example data")
 
-        data = cbf.read('../examples/in16c_010001.cbf')
+        data = cbf.read(f"{base_dir_examples}/in16c_010001.cbf")
 
         # Random points of the image
         self.assertEqual(data.data[0][0], 1)
@@ -82,7 +75,7 @@ class TestGenerator(unittest.TestCase):
         self.assertEqual(data.data[125][127], -2)  # Point with extreme value
         self.assertEqual(data.data[357][271], 214)
 
-        data = cbf.read('../examples/run2_1_00148.cbf')
+        data = cbf.read(f"{base_dir_examples}/run2_1_00148.cbf")
         # Random points of the image
         self.assertEqual(data.data[1169][1006], 20)
         self.assertEqual(data.data[1178][1030], 0)
@@ -91,5 +84,6 @@ class TestGenerator(unittest.TestCase):
         self.assertEqual(data.data[777][1707], 16)
         self.assertEqual(data.data[1302][1323], 98)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
