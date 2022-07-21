@@ -7,6 +7,7 @@ source:
 requirements:
     build:
         - m2w64-make [win]
+        - {{ compiler('cxx') }}
         - python
         - setuptools
         - numpy
