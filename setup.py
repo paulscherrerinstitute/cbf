@@ -28,5 +28,5 @@ setup(
         Extension("cbf_c", ["src/cbf.cpp", "src/python-cbf.c"], define_macros=macros, extra_compile_args=compile_args)
     ],
     install_requires=["numpy"],
-    classifiers=["Programming Language :: C", "Programming Language :: Python", "Programming Language :: Python :: 3",],
+    classifiers=["Programming Language :: C", "Programming Language :: Python", "Programming Language :: Python :: 3"],
 )
