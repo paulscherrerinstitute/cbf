@@ -19,5 +19,5 @@ jobs:
       with:
         subdir: 'conda-recipe'
         anacondatoken: ${{ secrets.ANACONDA_TOKEN }}
-        channel_opts: '-c conda-forge'
+        # channel_opts: '-c conda-forge'
         # channel_opts: -c paulscherrerinstitute
