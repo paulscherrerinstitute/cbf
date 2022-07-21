@@ -21,6 +21,7 @@ setup(
     name="cbf",
     version=VERSION_STR,
     description="CBF Bindings for Python",
+    long_description="CBF Bindings for Python",
     author="Paul Scherrer Institute",
     url="https://github.com/paulscherrerinstitute/cbf",
     py_modules=["cbf"],
