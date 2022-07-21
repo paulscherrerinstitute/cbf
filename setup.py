@@ -37,12 +37,13 @@ setup(
         extra_compile_args=compile_args
         )
     ],
+    install_requires=[
+          'numpy'
+      ],
 
     classifiers=[
         'Programming Language :: C',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
     ],
 )
