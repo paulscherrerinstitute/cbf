@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/paulscherrerinstitute/cbf.svg?branch=master)](https://travis-ci.org/paulscherrerinstitute/cbf)
+[![python_test](https://github.com/paulscherrerinstitute/cbf/actions/workflows/python_test.yaml/badge.svg)](https://github.com/paulscherrerinstitute/cbf/actions/workflows/python_test.yaml)
+[![pypi_publish](https://github.com/paulscherrerinstitute/cbf/actions/workflows/pypi_publish.yaml/badge.svg)](https://github.com/paulscherrerinstitute/cbf/actions/workflows/pypi_publish.yaml)
+[![conda_publish](https://github.com/paulscherrerinstitute/cbf/actions/workflows/conda_publish.yaml/badge.svg)](https://github.com/paulscherrerinstitute/cbf/actions/workflows/conda_publish.yaml)
 
 # Overview
 CBF is a simple Python package (Python 3.x) for reading and writing cbf (Crystallographic Binary Format) files.
