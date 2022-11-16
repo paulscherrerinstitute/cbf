@@ -1,3 +1,4 @@
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -7,10 +8,10 @@
 
 static PyObject *py_cbf_compress(PyObject *self, PyObject *args) {
   const unsigned char *source;
-  int source_size;
+  Py_ssize_t source_size;
   unsigned char *dest;
-  int dest_size;
-  int compressed_size;
+  Py_ssize_t dest_size;
+  Py_ssize_t compressed_size;
 
   if (!PyArg_ParseTuple(args, "s#s#", &source, &source_size, &dest, &dest_size)) {
       return NULL;
@@ -24,9 +25,9 @@ static PyObject *py_cbf_compress(PyObject *self, PyObject *args) {
 
 static PyObject *py_cbf_uncompress(PyObject *self, PyObject *args) {
     const unsigned char *source;
-    int source_size;
+    Py_ssize_t source_size;
     unsigned char *dest;
-    int dest_size;
+    Py_ssize_t dest_size;
 
 
     if (!PyArg_ParseTuple(args, "s#s#", &source, &source_size, &dest, &dest_size)) {
