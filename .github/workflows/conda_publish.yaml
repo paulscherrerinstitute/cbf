@@ -1,17 +1,10 @@
-
 name: conda_publish
 
-env:
-  INPUT_CHANNEL_OPTS: '-c conda-forge'
-
 on:
-  push:
-    tags:
-      - '*'
   release:
-    types: [created]
+    types: [published, edited]
   workflow_dispatch:
-
+    
 jobs:
   publish:
     runs-on: ubuntu-latest
