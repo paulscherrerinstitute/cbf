@@ -1,5 +1,4 @@
 [![python_test](https://github.com/paulscherrerinstitute/cbf/actions/workflows/python_test.yaml/badge.svg)](https://github.com/paulscherrerinstitute/cbf/actions/workflows/python_test.yaml)
-[![pypi_publish](https://github.com/paulscherrerinstitute/cbf/actions/workflows/pypi_publish.yaml/badge.svg)](https://github.com/paulscherrerinstitute/cbf/actions/workflows/pypi_publish.yaml)
 
 
 # Overview
@@ -7,10 +6,16 @@ CBF is a simple Python package (Python 3.x) for reading and writing cbf (Crystal
 
 # Installation
 
-## PYPI
+## Pip
 
-```
-pip install cbf
+To install the package via pip use:
+
+```bash
+# install the latest tagged version
+pip install git+https://github.com/paulscherrerinstitute/cbf.git@1.2.0
+
+# install the latest development version
+pip install git+https://github.com/paulscherrerinstitute/cbf.git
 ```
 
 
