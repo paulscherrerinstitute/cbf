@@ -6,3 +6,4 @@ dist
 .eggs
 .ipynb_checkpoints
 cbf.egg-info
+.python-version
