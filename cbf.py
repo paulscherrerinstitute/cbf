@@ -174,7 +174,8 @@ def read(filename, metadata=True, parse_miniheader=False):
     if parse_miniheader:
         try:
             m = miniheader_re.match(file_header)
-            miniheader = m.groupdict()
+            if m is not None:
+                miniheader = m.groupdict()
         except:
             pass
 
