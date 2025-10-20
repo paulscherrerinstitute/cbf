@@ -240,6 +240,6 @@ def uncompress(binary_data, size_x, size_y, data_type):
 
     output_buffer = b'a' * size
     cbf_c.uncompress(binary_data, output_buffer)
-    numpy_array = numpy.fromstring(output_buffer, dtype=data_type)
+    numpy_array = numpy.frombuffer(output_buffer, dtype=data_type)
     numpy_array = numpy_array.reshape(size_x, size_y)
     return numpy_array
