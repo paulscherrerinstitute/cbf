@@ -11,8 +11,8 @@ CBF is a simple Python package (Python 3.x) for reading and writing cbf (Crystal
 To install the package via pip use:
 
 ```bash
-# install the latest tagged version
-pip install git+https://github.com/paulscherrerinstitute/cbf.git@1.2.0
+# install the latest tagged version (in this case 1.3.0)
+pip install git+https://github.com/paulscherrerinstitute/cbf.git@1.3.0
 
 # install the latest development version
 pip install git+https://github.com/paulscherrerinstitute/cbf.git
