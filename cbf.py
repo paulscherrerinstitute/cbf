@@ -6,37 +6,37 @@ import cbf_c
 import re
 
 miniheader_re = re.compile(
-    b"(.*^data_(?P<prefix>.*?)_\d+\r\n)?"
-    b"(.*^# Detector: (?P<detector_model>[^,]+),\s*(?P<detector_number>[^,\r\n]+))?"
-    b"(.*^# Pixel_size (?P<x_pixel_size>[^ m]+) m x (?P<y_pixel_size>[^ m]+))?"
-    b"(.*^# Silicon sensor, thickness (?P<sensor_thickness>[^ ]+))?"
-    b"(.*^# Exposure_time (?P<exposure_time>.+?) s\r\n)?"
-    b"(.*^# Exposure_period (?P<exposure_period>.+?) s\r\n)?"
-    b"(.*^# Threshold_setting: (?P<threshold_energy>[^ ]+ eV))?"
-    b"(.*^# Gain_setting: (?P<threshold_gain>[^\r\n]+))?"
-    b"(.*^# Image_path: (?P<image_path>[^\r\n]+))?"
-    b"(.*^# Wavelength (?P<wavelength>.*?) A)?"
-    b"(.*^# Detector_distance (?P<detector_distance>.*?) m)?"
-    b"(.*^# Beam_xy \((?P<beam_center_x>\d+\.\d+), (?P<beam_center_y>\d+\.\d+)\) pixels)?"
-    b"(.*^# Flux (?P<photon_flux>[^\r\n]+))?"
-    b"(.*^# Filter_transmission (?P<beam_attenuation>[^\r\n]+))?"
-    b"(.*^# Start_angle (?P<start_angle>.*?) deg.)?"
-    b"(.*^# Angle_increment (?P<angle_increment>.*?) deg.)?"
-    b"(.*^# Phi (?P<phi>.*?) deg.)?"
-    b"(.*^# Phi_increment (?P<phi_increment>.*?) deg.)?"
-    b"(.*^# Chi (?P<chi>.*?) deg.)?"
-    b"(.*^# Chi_increment (?P<chi_increment>.*?) deg.)?"
-    b"(.*^# Oscillation_axis (?P<oscillation_axis>[^\r\n]+))?"
-    b'(.*conversions="(?P<conversions>[^"]+)")?'
-    b"(.*X-Binary-Size: (?P<binary_size>[^\r\n]+))?"
-    b"(.*X-Binary-ID: (?P<binary_id>[^\r\n]+))?"
-    b'(.*X-Binary-Element-Type: "(?P<binary_element_type>[^"]+)")?'
-    b"(.*X-Binary-Element-Byte-Order: (?P<binary_element_byte_order>[^\r\n]+))?"
-    b"(.*Content-MD5:\s*(?P<content_md5>[^\r\n]+))?"
-    b"(.*X-Binary-Number-of-Elements: (?P<number_of_elements>[^\r\n]+))?"
-    b"(.*X-Binary-Size-Fastest-Dimension: (?P<pixels_in_x>[^\r\n]+))?"
-    b"(.*X-Binary-Size-Second-Dimension: (?P<pixels_in_y>[^\r\n]+))?"
-    b"(.*X-Binary-Size-Padding: (?P<binary_padding>[^\r\n]+))?",
+    rb"(.*^data_(?P<prefix>.*?)_\d+\r\n)?"
+    rb"(.*^# Detector: (?P<detector_model>[^,]+),\s*(?P<detector_number>[^,\r\n]+))?"
+    rb"(.*^# Pixel_size (?P<x_pixel_size>[^ m]+) m x (?P<y_pixel_size>[^ m]+))?"
+    rb"(.*^# Silicon sensor, thickness (?P<sensor_thickness>[^ ]+))?"
+    rb"(.*^# Exposure_time (?P<exposure_time>.+?) s\r\n)?"
+    rb"(.*^# Exposure_period (?P<exposure_period>.+?) s\r\n)?"
+    rb"(.*^# Threshold_setting: (?P<threshold_energy>[^ ]+ eV))?"
+    rb"(.*^# Gain_setting: (?P<threshold_gain>[^\r\n]+))?"
+    rb"(.*^# Image_path: (?P<image_path>[^\r\n]+))?"
+    rb"(.*^# Wavelength (?P<wavelength>.*?) A)?"
+    rb"(.*^# Detector_distance (?P<detector_distance>.*?) m)?"
+    rb"(.*^# Beam_xy \((?P<beam_center_x>\d+\.\d+), (?P<beam_center_y>\d+\.\d+)\) pixels)?"
+    rb"(.*^# Flux (?P<photon_flux>[^\r\n]+))?"
+    rb"(.*^# Filter_transmission (?P<beam_attenuation>[^\r\n]+))?"
+    rb"(.*^# Start_angle (?P<start_angle>.*?) deg.)?"
+    rb"(.*^# Angle_increment (?P<angle_increment>.*?) deg.)?"
+    rb"(.*^# Phi (?P<phi>.*?) deg.)?"
+    rb"(.*^# Phi_increment (?P<phi_increment>.*?) deg.)?"
+    rb"(.*^# Chi (?P<chi>.*?) deg.)?"
+    rb"(.*^# Chi_increment (?P<chi_increment>.*?) deg.)?"
+    rb"(.*^# Oscillation_axis (?P<oscillation_axis>[^\r\n]+))?"
+    rb'(.*conversions="(?P<conversions>[^"]+)")?'
+    rb"(.*X-Binary-Size: (?P<binary_size>[^\r\n]+))?"
+    rb"(.*X-Binary-ID: (?P<binary_id>[^\r\n]+))?"
+    rb'(.*X-Binary-Element-Type: "(?P<binary_element_type>[^"]+)")?'
+    rb"(.*X-Binary-Element-Byte-Order: (?P<binary_element_byte_order>[^\r\n]+))?"
+    rb"(.*Content-MD5:\s*(?P<content_md5>[^\r\n]+))?"
+    rb"(.*X-Binary-Number-of-Elements: (?P<number_of_elements>[^\r\n]+))?"
+    rb"(.*X-Binary-Size-Fastest-Dimension: (?P<pixels_in_x>[^\r\n]+))?"
+    rb"(.*X-Binary-Size-Second-Dimension: (?P<pixels_in_y>[^\r\n]+))?"
+    rb"(.*X-Binary-Size-Padding: (?P<binary_padding>[^\r\n]+))?",
     flags=re.MULTILINE | re.DOTALL,
 )
 
