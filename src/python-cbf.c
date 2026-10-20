@@ -34,7 +34,10 @@ static PyObject *py_cbf_uncompress(PyObject *self, PyObject *args) {
         return NULL;
     }
 
-    decodeCBFuin32(source, source_size, dest);
+    if (decodeCBFuin32(source, source_size, dest, dest_size) == 0 && source_size > 0) {
+        PyErr_SetString(PyExc_ValueError, "Compressed data is truncated or larger than the output buffer");
+        return NULL;
+    }
 
     return Py_BuildValue("i", 0);
 }
