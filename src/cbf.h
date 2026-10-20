@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 //compression uncompression of uin32 data
-unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, unsigned char *outBuf);
+unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, unsigned char *outBuf, unsigned int outNumBytes);
 unsigned int encodeCBFuin32(const unsigned char *inBuf, unsigned int inNumElem, unsigned char *outBuf, unsigned int outNumBytes);
 
 unsigned int decodeCBFuin16(const unsigned char *inBuf, const int inNumByte, unsigned short *outBuf);

@@ -44,11 +44,12 @@ extern "C" {
 //(the code here is based from the dectris sources)
 
 //Dectris: CBF_decode.c: int read_diskimage_cbf_raw(struct object_descriptor *ObjPtr,...)
-unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, unsigned char *outBuf)
+unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, unsigned char *outBuf, unsigned int outNumBytes)
 {
   unsigned int *outBufX = (unsigned int *) outBuf;
   unsigned int *outBufStart;
   outBufStart=outBufX;
+  unsigned int *outBufEnd=outBufStart+outNumBytes/4;
 
   union
   {
@@ -65,6 +66,8 @@ unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, uns
   unsigned int diff=0;
   while(enc.uint8-encStart.uint8<inNumByte)
   {
+    if(outBufX>=outBufEnd)
+      return 0;
     if(*enc.uint8!=0x80)
     {
       diff=(int)*enc.int8++;
@@ -72,6 +75,8 @@ unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, uns
     else
     {
       enc.uint8++;
+      if(inNumByte-(enc.uint8-encStart.uint8)<2)
+        return 0;
       if(*enc.uint16!=0x8000)
       {
         diff=(int)*enc.int16++;
@@ -79,6 +84,8 @@ unsigned int decodeCBFuin32(const unsigned char *inBuf, const int inNumByte, uns
       else
       {
         enc.uint16++;
+        if(inNumByte-(enc.uint8-encStart.uint8)<4)
+          return 0;
         diff=(int)*enc.int32++;
       }
     }
